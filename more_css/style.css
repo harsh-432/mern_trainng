@@ -1,0 +1,17 @@
+*{
+  padding:0px;
+  margin:0px;
+  box-sizing: border-box;
+}
+/* body{
+  background-color: aqua;
+  min-height: 100vh;
+  min-width:100vh;
+} */
+.parent{
+  height: 100px;
+  width:100px;
+  background-color: skyblue;
+ position:static;
+ top:10px;
+}

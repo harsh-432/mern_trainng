@@ -1,0 +1,29 @@
+.parent{
+  background-color: blueviolet;
+  color: yellow;
+  text-align: center;
+  width: 400px;
+  height: 400px;
+}
+@media(800px<=width<=1000px){
+  .parent{ 
+ background-color: antiquewhite;
+  
+ h1{
+  background-color: aquamarine;
+ }
+  }
+}
+button{
+  background-color: aquamarine;
+  height: 30px;
+  position:absolute;
+  top:80%;
+  right: 50%;
+}
+button:hover{
+  background-color: aquamarine;
+  position:absolute;
+  right: 30%;
+  top:90%
+}
