@@ -1,0 +1,2 @@
+1 why h6 is smaller than p 
+2 difference between xhtml and html
