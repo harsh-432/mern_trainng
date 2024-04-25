@@ -5,7 +5,6 @@ const app = express();
 app.use(express.json());
 app.get("/api/products", async (req, res) => {
   //const data = fs.readFileSync('./data.json',"utf8");
-  const data = await fspromise.readFile("./data.json", "utf8");    //this function would file string format
   console.log(data);
   const arr = JSON.parse(data);
  console.log(arr);

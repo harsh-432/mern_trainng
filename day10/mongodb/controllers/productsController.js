@@ -1,109 +1,74 @@
-const fspromise = require("fs/promises");
+const productModel = require("../models/productsModel.js");
+const productsModel = require("../models/productsModel.js");
 
-
-const getAllProducts=async (req, res) => {
-  //const data = fs.readFileSync('./data.json',"utf8");
-  const data = await fspromise.readFile("./data.json", "utf8");
-  const arr = JSON.parse(data);
+const getAllProducts = async (req, res) => {
+  const q=req.query;
+  console.log(q);
+  //const datadb = await productsModel.find(q);
+  const datadb = await productsModel.find();
+  console.log(datadb);
 
   //const obj=JSON.parse(data);
-  res.json({
+  res.send({
     status: "success",
-    results: arr.length,
     data: {
-      products: arr,
+      products:datadb,
     },
   });
-  //  res.send("this is home page");
-  console.log("server started");
+};
+
+const addproduct = async (req, res) => {
+  try {
+    console.log(req.body);
+    const data = await productsModel.create(req.body);
+    console.log(data);
+    res.json({
+      status: "success",
+      results: 1,
+      data: data,
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+const putProduct = async (req, res) => {
+  
+  
+};
+
+const  replaceProduct = async(req,res)=>{
+  const reqid=req.params.id;
+  const data = {...req.body ,reqid};
+  const result=await productsModel.findOneAndReplace({_id:reqid},data);
+  res.send({
+    status: "success",
+    result
+  })
 }
 
+const deleteProduct = async (req, res) => {
 
-const addproduct=async (req, res) => {
-  //console.log(req);
-  //console.log(Object.keys(req));
-  //console.log(req.body);
-  // data.id=212;
-  // console.log(data);
-
-  const data = req.body;
-  if(!data.price || !data.title){
+  try{
+    const reqid = req.params.id;
+    await productsModel.findOneAndDelete({_id:reqid});
+  
     res.json({
-      status:'fail',
-      message:'title or message must be provided'
+      status:"success",
+      message:"successfully deleted"
+  
     })
   }
-  const db = await fspromise.readFile("./data.json", "utf-8");
-  const arr = JSON.parse(db);
-  const len = arr.length;
-  const newProduct = data;
-  if (len == 0) {
-    newProduct.id = 1;
-    // arr.push(newProduct);
-    // console.log(arr);
-    // fspromise.writeFile("./data.json", JSON.stringify(arr));
+  catch(error){
+    console.log(error.message);
   }
-   else {
-    // const newProduct = data;
-    newProduct.id = arr[len - 1].id + 1;
-    // console.log(newProduct);
-    
-  }
-  arr.push(newProduct);
-  fspromise.writeFile("./data.json", JSON.stringify(arr));
-  //res.send("work in progess");
-
-  res.json({
-    status:'success',
-    results:1,
-    data:{
-      newProduct:newProduct,
-    }
-  })
-}
-
-
-const putProduct=async (req,res)=>{
-  //  console.log(req);
-const arr=JSON.parse(await fspromise.readFile("./data.json",'utf-8'));
-   res.send("work in progress");
-   const reqid=parseInt(req.params.id);
-   const data=req.body;
-   data.id=reqid;
-   const newArr=arr.map((elem)=>{
-    if(elem.id==reqid)
-    return data;
-   else
-    return elem;
-   })
-   fspromise.writeFile("./data.json",JSON.stringify(newArr));
-  //  console.log(data);
-  //  const data=req.body;   
-}
-
-const deleteProduct=async(req,res)=>{
-  const reqid=parseInt(req.params.id);
-  const arr=JSON.parse(await fspromise.readFile("./data.json",'utf-8'));
-  const newArr=arr.filter((elem)=>{
-    if(elem.id===reqid)
-    return false;
-    else
-    return true;
-  });
-  fspromise.writeFile("./data.json",JSON.stringify(newArr));
-  res.status(204);
-  res.json({
-     status:"success",
-     data:{
-      newProduct:null,
-     }
-  })
-
-
-}
-module.exports={
+  
+  
+};
+module.exports = {
   getAllProducts,
   addproduct,
   putProduct,
-  deleteProduct
-}
+  deleteProduct,
+  replaceProduct
+};

@@ -1,8 +1,6 @@
 const express = require("express");
 //const fs=require('fs');
-const fspromise = require("fs/promises");
 const mongoose = require("mongoose");
-const dbtest =require('./models/productsModel.js');
 
 const app = express();
 app.use(express.json());
@@ -77,5 +75,7 @@ let dbLink = url.replace("$_USERNAME_$", databaseUser);
 dbLink = dbLink.replace("$_password_$", databasePassword);
 dbLink = dbLink.replace("$DB_NAME$", databaseName);
 mongoose.connect(dbLink).then(() => console.log("database connect"));
+
+app.use('/api/products', productRouter);
 
 app.listen(1400, () => console.log("app started"));
